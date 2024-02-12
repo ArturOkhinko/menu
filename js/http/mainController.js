@@ -1,6 +1,6 @@
 export default class MainController {
   static async getDataForMenu() {
-    // Здесь предполагается Fetch запрос
+    // Здесь предполагается Fetch запрос вместо простого присвоения обьекта
     const data = {
       services: [
         {

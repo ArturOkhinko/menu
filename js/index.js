@@ -1,49 +1,66 @@
-import MainController from "./http/mainController.js";
+import MainController from "./http/MainController.js";
 
-function selectNameOption(name, price) {
-  if (price) {
-    return name + ":" + " " + price;
+function insertCorrectPlace(insertedNode, sorthead, elementWidthSuitableId) {
+  const childNodes = elementWidthSuitableId.childNodes;
+  for (const childNode of childNodes) {
+    if (childNode.sorthead > sorthead) {
+      return childNode.before(insertedNode);
+    }
   }
-  return name;
+  return elementWidthSuitableId.append(insertedNode);
+}
+
+function createDetails(name, id, sorthead) {
+  const details = document.createElement("details");
+  details.id = id;
+  details.sorthead = sorthead;
+
+  const summary = document.createElement("summary");
+  summary.innerHTML = name;
+  summary.sorthead = sorthead;
+
+  details.className = "item";
+  details.append(summary);
+  return details;
 }
 
 async function renderMenu() {
   const data = await MainController.getDataForMenu();
+
   data.services.forEach((service) => {
     if (service.head === null) {
-      const menu = document.createElement("div");
-      const item = document.createElement("div");
-
-      menu.className = "menu";
-      item.className = "item" + " " + service.sorthead;
-      item.id = service.id;
-
-      const subparagraph = document.createElement("div");
-      subparagraph.innerHTML = selectNameOption(service.name, service.price);
-
       const mainDOMNode = document.querySelector(".main");
-      item.append(subparagraph);
+      const menu = document.createElement("div");
+      menu.className = "menu";
+
+      if (service.price === 0) {
+        menu.append(createDetails(service.name, service.id, service.sorthead));
+        return mainDOMNode.append(menu);
+      }
+
+      const item = document.createElement("p");
+      item.className = "item";
+      item.sorthead = service.sorthead;
+      item.innerHTML = service.name + ":" + " " + service.price;
       menu.append(item);
       return mainDOMNode.append(menu);
     }
-    const itemMatchingId = document.getElementById(String(service.head));
-    const item = document.createElement("div");
-    const subparagraph = document.createElement("div");
 
-    item.id = service.id;
-    item.className = "item";
-    subparagraph.className = "subparagraph" + " " + service.sorthead;
-    subparagraph.innerHTML = selectNameOption(service.name, service.price);
-    item.append(subparagraph);
+    const elementWidthSuitableId = document.getElementById(
+      String(service.head)
+    );
 
-    const childNodes = item.childNodes;
-
-    for (const childNode of childNodes) {
-      if (childNode.className.split(" ")[1] > service.sorthead) {
-        return childNode.before(item);
-      }
+    if (service.node === 1) {
+      const details = createDetails(service.name, service.id, service.sorthead);
+      insertCorrectPlace(details, service.sorthead, elementWidthSuitableId);
     }
-    itemMatchingId.append(item);
+    if (service.node === 0) {
+      const p = document.createElement("p");
+      p.sorthead = service.sorthead;
+      p.className = "subparagraph";
+      p.innerHTML = service.name + ":" + " " + service.price;
+      insertCorrectPlace(p, service.sorthead, elementWidthSuitableId);
+    }
   });
 }
 

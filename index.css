@@ -1,24 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: rgb(150, 150, 150);
 }
-.main {
-  display: flex;
-}
+
 .menu {
   border: 1px solid cyan;
   border-radius: 10px;
   margin: 10px;
+  font-size: 20px;
 }
+
 .item {
-  display: flex;
-  flex-direction: column;
-  margin: 10px 10px 5px 10px;
+  margin: 10px 0 10px 10px;
   cursor: pointer;
 }
 
 .subparagraph {
-  display: flex;
+  margin: 5px 0 5px 25px;
+  cursor: pointer;
 }
+
 .subparagraph:hover {
-  text-decoration-line: underline;
+  text-decoration: underline;
 }
