@@ -1,0 +1,24 @@
+body {
+  background-color: rgb(150, 150, 150);
+}
+.main {
+  display: flex;
+}
+.menu {
+  border: 1px solid cyan;
+  border-radius: 10px;
+  margin: 10px;
+}
+.item {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px 5px 10px;
+  cursor: pointer;
+}
+
+.subparagraph {
+  display: flex;
+}
+.subparagraph:hover {
+  text-decoration-line: underline;
+}
